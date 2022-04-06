@@ -1,0 +1,182 @@
+CREATE TABLE Punkty_sprzedazy (
+    ID_punktu int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    nazwa varchar(50),
+    ulica varchar(50),
+    miejscowosc varchar(50),
+    kod_pocztowy varchar(6),
+    telefon int(9));
+
+CREATE TABLE Pracownicy ( 
+ID_pracownika int PRIMARY KEY NOT NULL AUTO_INCREMENT, 
+ID_punktu int, 
+imie varchar(50), 
+nazwisko varchar(50), 
+stanowisko varchar(50), 
+pensja int(5));
+ALTER TABLE Pracownicy 
+ADD FOREIGN KEY (ID_punktu) REFERENCES Punkty_sprzedazy(ID_punktu);
+
+CREATE TABLE Samochody ( 
+    ID_samochodu int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    ID_punktu int,
+    marka varchar(50), 
+    model varchar(50), 
+    silnik varchar(4), 
+    moc varchar(6), 
+    rok_produkcji int(4), 
+    stan varchar(50), 
+    cena int(7),
+    rodzaj_pojazdu varchar(50)); 
+ALTER TABLE Samochody   
+ADD FOREIGN KEY (ID_punktu) REFERENCES Punkty_sprzedazy(ID_punktu);
+
+
+CREATE TABLE Klienci ( 
+ID_klienta int PRIMARY KEY NOT NULL AUTO_INCREMENT, 
+imie varchar(50), 
+nazwisko varchar(50), 
+kod_pocztowy varchar(6), 
+miejscowosc varchar(50), 
+ulica varchar(50) );
+
+CREATE TABLE Transakcje ( 
+ID_transakcji int PRIMARY KEY NOT NULL AUTO_INCREMENT,  
+wartosc_transakcji int(6), 
+rodzaj_platnosci varchar(20), 
+data_transakcji date, 
+ID_klienta int, 
+ID_pracownika int ,
+ID_samochodu int,
+status_platnosci varchar(25));
+
+CREATE TABLE Sprzedane_auta (
+    ID_samochodu int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    ID_punktu int,
+    marka varchar(50), 
+    model varchar(50), 
+    silnik varchar(4), 
+    moc varchar(6), 
+    rok_produkcji int(4), 
+    stan varchar(50), 
+    cena int(7),
+    rodzaj_pojazdu varchar(50),
+    czas_sprzedazy date );
+
+
+CREATE TABLE status_platnosci (
+ID_transakcji int,
+status_platnosci varchar(25) );
+ALTER TABLE status_platnosci      
+ ADD FOREIGN KEY (ID_transakcji) REFERENCES Transakcje    (ID_transakcji);
+
+ALTER TABLE Transakcje
+ADD FOREIGN KEY (ID_klienta) REFERENCES Klienci (ID_klienta);
+ALTER TABLE Transakcje
+ADD FOREIGN KEY (ID_pracownika) REFERENCES Pracownicy  (ID_pracownika);
+ALTER TABLE Transakcje 
+ADD FOREIGN KEY (ID_samochodu) REFERENCES  sprzedane_auta (ID_samochodu);
+
+INSERT INTO punkty_sprzedazy (ID_punktu, nazwa, ulica, miejscowosc, kod_pocztowy, telefon)  
+ VALUES 
+ (1, 'York', 'Polna 34', 'Torun', '87-100', 790486798),  
+ (2, 'Auto Komis Markol', 'Kwiatowa 87b', 'Warszawa', '00-002', 883083571), 
+ (3, 'Laguna', 'Slupska 1', 'Bydgoszcz', '72-122', 123456789);
+
+INSERT INTO `samochody`(`ID_samochodu`, `ID_punktu`, `marka`, `model`, `silnik`, `moc`, `rok_produkcji`, `stan`, `cena`, `rodzaj_pojazdu`) 
+VALUES 
+(1, 1,'Audi','A4','3.0l','240KM','2012','Bardzo dobry','59900','sedan'),
+(2, 2,'BMW','5','2.0l','200KM','2016','Bardzo dobry','79900','sedan'),
+(3, 3,'Mercedes','A','1.8l','120KM','2006','Dobry','9900','hatchback'),
+(4, 1,'Porsche','Cayenne ','4.2l','380KM','2003','Średni','12900','SUV'),
+(5, 2,'Honda','Civic','1.8l','142KM','2012','Dobry','44900','hatchback'),
+(6, 3,'Kia','Ceed','2.0l','160KM','2015','Uszkodzony','29900','hatchback'),
+(7, 2,'Honda','Accord','2.0l','225KM','2016','Bardzo dobry','63900','sedan'),
+(8, 2,'Kia','Optima','3.0l','175KM','2012','Bardzo dobry','26900','sedan'),
+(9, 1,'Opel','Corsa','1.2l','95KM','2018','Bardzo dobry','44500','hatchback'),
+(10, 3,'Opel','Astra','2.2l','180KM','2004','Średni','11900','coupe'),
+(11, 1,'Skoda', 'Octavia','1.8l','180KM','2013','Dobry','31900','sedan'), 
+(12, 2,'Seatl','Ibiza','1.4l','125KM','2016','Dobry','12500','hatchback'), 
+(13, 3,'Fiat','Panda','1.0l','60KM','2004','Średni','6500','hatchback'), 
+(14, 3,'Citroen','C4','1.7l','138KM','2015','Średni','48500','hatchback');
+
+INSERT INTO Pracownicy (ID_pracownika, ID_punktu, imie, nazwisko, stanowisko, pensja) 
+VALUES  
+ (1, 1, 'Piotr', 'Kowalski', 'kierownik', 4000),  
+ (2, 1, 'Kamil', 'Nowak', 'sprzedawca', 2500), 
+ (3, 2, 'Witold', 'Wisniewski', 'sprzedawca', 2500), 
+ (4, 3, 'Rafal', 'Piotrowski', 'sprzedawca', 2500);
+
+INSERT INTO `klienci`(`ID_klienta`, `imie`, `nazwisko`, `kod_pocztowy`, `miejscowosc`, `ulica`) 
+VALUES 
+(1,'Jan','Kowal','87-100','Toruń','Gagarina 16'),
+(2,'Eryk','Deryk','87-100','Toruń','Słoneczna 24/3b'),
+(3,'Bożena','Drewniak','00-002','Warszawa','Krucza 88b/17'),
+(4,'Stefan','Kowal','72-122','Bydgoszcz','Gagarina 16'),
+(5,'Natalia','Zamojska','72-122','Bydgoszcz','Długa 7'),
+(6,'Marek','Kamiński','00-002','Warszawa','Prosta 46c/24'),
+(7,'Jerzy','Włos','82-112','Ciechocinek','Sosnowa 6e/2');
+
+
+____________
+____________
+DELIMITER $$
+CREATE TRIGGER usun_auto
+BEFORE DELETE ON samochody
+FOR EACH ROW 
+BEGIN  
+INSERT INTO sprzedane_auta (ID_samochodu , ID_punktu, marka , model, silnik, moc, rok_produkcji, stan, cena, rodzaj_pojazdu, czas_sprzedazy) 
+VALUES (OLD.ID_samochodu, OLD.ID_punktu, OLD.marka, OLD.model, OLD.silnik, OLD.moc, OLD.rok_produkcji, OLD.stan, OLD.cena, OLD.rodzaj_pojazdu, NOW()); 
+END ;
+$$
+DELIMITER ;   
+
+DELIMITER $$
+CREATE TRIGGER dodaj_status
+AFTER INSERT ON transakcje
+FOR EACH ROW 
+BEGIN  
+INSERT INTO status_platnosci (ID_transakcji , status_platnosci)   
+VALUES (NEW.ID_transakcji, NEW.status_platnosci);
+END;
+$$
+DELIMITER ;   
+
+DELIMITER $$
+CREATE TRIGGER update_status
+AFTER UPDATE ON transakcje
+FOR EACH ROW 
+BEGIN  
+UPDATE status_platnosci as sp, transakcje as t 
+SET sp.status_platnosci = t.status_platnosci
+WHERE t.ID_transakcji = sp.ID_transakcji;
+END;
+$$
+DELIMITER ;   
+
+
+DELIMITER $$  
+ CREATE FUNCTION zmiana_ceny 
+ (cena NUMERIC(11,2), zmiana NUMERIC(11,2)) 
+ RETURNS NUMERIC(11,2) 
+ BEGIN 
+DECLARE wynik NUMERIC(11,0); 
+ SET wynik = (cena * zmiana);  
+  RETURN wynik; 
+ END 
+ $$ 
+ DELIMITER ;
+
+CREATE OR REPLACE VIEW Szczegóły_transakcji AS 
+ SELECT  concat(k.imie,' ',k.nazwisko) as Klient, concat(s.marka, ' ',s.model) AS Samochód, s.cena AS Cena,  pk.nazwa AS Salon, concat (p.imie, ' ', p.nazwisko) AS Sprzedawca, t.data_transakcji AS 'Data transakcji' 
+ FROM (transakcje as t
+LEFT JOIN sprzedane_auta as s ON t.ID_samochodu = s.ID_samochodu 
+LEFT JOIN klienci as k ON t.ID_klienta = k.ID_klienta 
+LEFT JOIN pracownicy as p ON p.ID_pracownika = t.ID_pracownika
+LEFT JOIN punkty_sprzedazy as pk ON p.ID_punktu = pk.ID_punktu);
+
+CREATE OR REPLACE VIEW wyniki_sprzedazy AS 
+SELECT concat (p.imie, ' ', p.nazwisko) AS Pracownik, pk.nazwa AS Salon, COUNT(t.ID_pracownika) AS "Ilość sprzedanych aut" 
+FROM (pracownicy AS p  
+INNER JOIN transakcje AS t ON t.ID_pracownika=p.ID_pracownika  
+LEFT JOIN punkty_sprzedazy as pk ON pk.ID_punktu = p.ID_punktu)
+ GROUP BY t.ID_pracownika;
