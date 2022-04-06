@@ -117,8 +117,7 @@ VALUES
 (7,'Jerzy','Włos','82-112','Ciechocinek','Sosnowa 6e/2');
 
 
-____________
-____________
+
 DELIMITER $$
 CREATE TRIGGER usun_auto
 BEFORE DELETE ON samochody
