@@ -29,3 +29,7 @@ View:
 
 
 The file scheme.png contains the database schema and shows the relationship between the tables.
+
+How to use database:
+- To sell a car, delete a given record from the cars table.
+- Then, add the transaction to the transactions table.
